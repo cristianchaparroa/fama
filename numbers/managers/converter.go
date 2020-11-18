@@ -2,9 +2,15 @@ package managers
 
 import (
 	"errors"
+	"fama/core"
 	"fama/numbers/ports"
 	ntw "moul.io/number-to-words"
 )
+
+func init() {
+	err := core.Injector.Provide(newConverter)
+	core.CheckInjection(err, "newConverter")
+}
 
 type converter struct {
 }

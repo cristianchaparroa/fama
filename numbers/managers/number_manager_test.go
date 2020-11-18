@@ -52,7 +52,6 @@ func TestNumbersManager_ToWords_Multilingual(t *testing.T) {
 		{20, "ir", "بیست"},
 		{20, "id", "dua puluh"},
 		{20, "jp", "二十"},
-
 	}
 
 	converter := newConverter()
