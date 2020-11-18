@@ -1,8 +1,14 @@
 package managers
 
 import (
+	"fama/core"
 	"fama/numbers/ports"
 )
+
+func init() {
+	err := core.Injector.Provide(newNumbersManager)
+	core.CheckInjection(err, "newNumbersManager")
+}
 
 type numbersManager struct {
 	converter ports.Converter
