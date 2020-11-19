@@ -32,6 +32,25 @@ If is not possible create a local environment, and you have docker installed in
 your machine you can follow the next steps to run the application.
 
 ```shell script
+cd path/to/project/fama/
 docker build -t fama .
 docker run -p 8080:8080 fama
 ```
+
+
+### Docker-compose
+
+If you have installed `docker` and `docker-compose` you also can deploy the services just with
+
+```shell script
+cd path/to/project/fama/
+docker-compose up
+```
+It'll start the API server that will be exhibited in
+```
+{host}:8080
+```
+And the swagger documentation will be expose in 
+```
+{host}:8081
+``` 
