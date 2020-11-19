@@ -1,0 +1,6 @@
+{
+  "do_token" : "your_digital_ocean_token",
+  "pub_key":"your_pub_key",
+  "pvt_key": "your_pvt_key",
+  "ssh_fingerprint": "your_fingerprint"
+}
