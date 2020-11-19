@@ -116,3 +116,27 @@ func (s *numbersHandlerSuite) TestNumbersHandler_ToWords_WithoutSupportedLang() 
 	s.Equal(http.StatusUnprocessableEntity, errResponse.Status)
 	s.Equal(expectedError, errResponse.Title)
 }
+
+func (s *numbersHandlerSuite) TestNumbersHandler_ToWords_BadRequestNumber() {
+
+	recorder := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(recorder)
+	url := fmt.Sprintf("/numbers/%s/words?lang=de", "12r")
+	c.Request, _ = http.NewRequest(http.MethodGet, url, nil)
+	c.Params = []gin.Param{
+		{
+			Key:   "number",
+			Value: "12r",
+		},
+	}
+
+	s.handler.ToWords(c)
+
+	var errResponse handlers.Error
+	err := json.NewDecoder(recorder.Body).Decode(&errResponse)
+	s.Nil(err)
+
+	s.Equal(http.StatusBadRequest, recorder.Code)
+	s.Equal(http.StatusBadRequest, errResponse.Status)
+	s.Equal(InvalidRequestTitle, errResponse.Title)
+}
