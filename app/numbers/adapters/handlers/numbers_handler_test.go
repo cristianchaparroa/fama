@@ -39,6 +39,8 @@ func (s *numbersHandlerSuite) TestNumbersHandler_ToWords_OK() {
 	}}
 
 	expectedWords := "twelve"
+	expectedLang := "en"
+
 	s.manager.Mock.On("ToWords", mock.Anything, mock.Anything).
 		Return(expectedWords, nil).
 		Once()
@@ -50,7 +52,36 @@ func (s *numbersHandlerSuite) TestNumbersHandler_ToWords_OK() {
 	err := json.NewDecoder(recorder.Body).Decode(&response)
 	s.Nil(err)
 
-	expectedLang := "en"
+	s.Equal(StatusOK, response.Status)
+	s.Equal(expectedWords, response.Words)
+	s.Equal(expectedLang, response.Lang)
+}
+
+func (s *numbersHandlerSuite) TestNumbersHandler_ToWords_OK_With_Lang() {
+	recorder := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(recorder)
+	url := fmt.Sprintf("/numbers/%s/words?lang=fr", "12")
+	c.Request, _ = http.NewRequest(http.MethodGet, url, nil)
+	c.Params = []gin.Param{
+		{
+			Key:   "number",
+			Value: "12",
+		},
+	}
+	expectedWords := "douze"
+	expectedLang := "fr"
+
+	s.manager.Mock.On("ToWords", mock.Anything, mock.Anything).
+		Return(expectedWords, nil).
+		Once()
+
+	s.handler.ToWords(c)
+	s.Equal(http.StatusOK, recorder.Code)
+
+	var response NumberToWordsResponse
+	err := json.NewDecoder(recorder.Body).Decode(&response)
+	s.Nil(err)
+
 	s.Equal(StatusOK, response.Status)
 	s.Equal(expectedWords, response.Words)
 	s.Equal(expectedLang, response.Lang)
