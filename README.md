@@ -25,3 +25,13 @@ go run *.go
 ``` 
 
 After executes the last commands you can start to using the API. 
+
+### Docker
+
+If is not possible create a local environment, and you have docker installed in 
+your machine you can follow the next steps to run the application.
+
+```shell script
+docker build -t fama .
+docker run -p 8080:8080 fama
+```

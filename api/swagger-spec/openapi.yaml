@@ -1,0 +1,114 @@
+openapi: 3.0.0
+info:
+  title: FAMA
+  version: "1.0.0"
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  - url: 'https://api.qa.juntosxmexico.mx/'
+  - url: 'https://api.juntosxmexico.mx/'
+paths:
+  /health/:
+    get:
+      operationId: api.jxm.health
+      summary: It verifies if the services is alive.
+      responses:
+        '200':
+          description: This will return a 200 status code while the service is available
+
+  /numbers/:number/words:
+    get:
+      operationId: fama.numbers.to.words
+      summary: It generates a number in words
+      responses:
+        '200':
+          description: It generates a number in words
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NumbersToWordsResponse'
+        '422':
+          $ref: '#/components/responses/422'
+        '400':
+          $ref: '#/components/responses/400'
+
+
+
+components:
+  parameters:
+    platform:
+      in: header
+      name: platform
+      required: true
+      description: Platform sending the request.
+      schema:
+        type: string
+    language:
+      in: header
+      name: language
+      required: true
+      description: language
+      schema:
+        type: string
+  responses:
+    '400':
+      description: 'Bad request, client error.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: 'Error code, usually equivalent to the HTTP status code.'
+          example: 422
+        title:
+          type: string
+          description: 'Human-readable error explanation, if available.'
+          example: 'user already exist'
+        invalid_params:
+          type: array
+          description: 'Invalid params'
+          items:
+            $ref: '#/components/schemas/InvalidParam'
+
+    InvalidParam:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'number'
+        reason:
+          type: string
+          example: 'The number is invalid'
+        code:
+          type: string
+          example: 'invalid-number'
+          enum:
+            - "ivalid number"
+
+    NumbersToWordsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "ok"
+        name_in_words:
+          type: string
+          example: 'neuf cent quarante'
+        lang:
+          type: string
+          example: "fr"
+
+
