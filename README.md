@@ -2,13 +2,13 @@
 
 [![codecov](https://codecov.io/gh/cristianchaparroa/fama/branch/master/graph/badge.svg?token=BTHAPCM0II)](https://codecov.io/gh/cristianchaparroa/fama)
 
-
+Fama is a project that is in charge to transform numbers into words.
 
 ## Local development environment
 
 ### Requirements
 
-You should have installed Go in your machine, pelase follow this guide https://golang.org/doc/install 
+You should have installed Go in your machine, please follow this guide https://golang.org/doc/install 
 
 ### Download the project 
 
