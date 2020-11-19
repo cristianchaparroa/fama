@@ -1,6 +1,6 @@
 {
-  "do_token" : "99eb361d36820b20fd72eb17c8313da00812d5d1b0871ea9e35c0e23d3c40a61",
-  "pub_key":"/Users/cristianchaparro/.ssh/fama_rsa.pub",
-  "pvt_key": "/Users/cristianchaparro/.ssh/fama_rsa",
-  "ssh_fingerprint": "a7:ef:8d:5b:1c:8c:29:d5:20:33:cd:55:34:0a:1f:9c"
+  "do_token" : "",
+  "pub_key":"",
+  "pvt_key": "",
+  "ssh_fingerprint": ""
 }
