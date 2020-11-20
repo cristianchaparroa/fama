@@ -5,7 +5,9 @@ info:
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-
+servers:
+  - url: 'https://api.qa.juntosxmexico.mx/'
+  - url: 'https://api.juntosxmexico.mx/'
 paths:
   /health/:
     get:
@@ -15,8 +17,22 @@ paths:
         '200':
           description: This will return a 200 status code while the service is available
 
-  /numbers/:number/words:
+  /numbers/{number}/words:
     get:
+      parameters:
+        - in: path
+          name: number
+          schema:
+            type: integer
+          required: true
+          description: It is the number to generates the words
+
+        - in: query
+          name: lang
+          schema:
+            type: string
+          description: The language in which will be generate the number in words. If is not specified by the default the language will be English.
+           The following are the languages supported en,fr, it, es, se,nl,tr,pt, pl, ru, ir, id,jp
       operationId: fama.numbers.to.words
       summary: It generates a number in words
       responses:
@@ -30,8 +46,6 @@ paths:
           $ref: '#/components/responses/422'
         '400':
           $ref: '#/components/responses/400'
-
-
 
 components:
   parameters:
@@ -70,11 +84,11 @@ components:
         status:
           type: integer
           description: 'Error code, usually equivalent to the HTTP status code.'
-          example: 422
+          example: 400
         title:
           type: string
           description: 'Human-readable error explanation, if available.'
-          example: 'user already exist'
+          example: 'The number is invalid'
         invalid_params:
           type: array
           description: 'Invalid params'
@@ -108,5 +122,3 @@ components:
         lang:
           type: string
           example: "fr"
-
-
