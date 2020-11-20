@@ -4,6 +4,10 @@
 
 Fama is a project that is in charge to transform numbers into words.
 
+This repository follows the hexagonal architecture and the follow diagram is an
+overview of it
+ ![](./images/diagram-arq.png)
+
 ## Local development environment
 
 ### Requirements
