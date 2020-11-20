@@ -61,14 +61,11 @@ The following are the steps to set up the Digitalocean account and terraform.
 
 1. First of all you need to create a token as is showed on https://www.digitalocean.com/docs/apis-clis/api/create-personal-access-token/
 after that should export the token as environment variable to work with it properly.
-```
-export DO_PAT={YOUR_PERSONAL_ACCESS_TOKEN}
-```
 
-2. After that should have at least one ssh key, if you don't have it you should follow the next documentation https://www.digitalocean.com/docs/droplets/how-to/add-ssh-keys/
+2. You should setup the ssh key into the digitalocean, if you don't have it you should follow the next documentation https://www.digitalocean.com/docs/droplets/how-to/add-ssh-keys/
 
-3. The `fama_rsa` ssh key was added in the second step to digital ocean account. 
-Now is need to retrieve the  finger print ssh key.
+3. The `fama_rsa` ssh key was add in the second step to digital ocean account. 
+Now it needed to retrieve the ssh key finger print.
 
 ```shell script
 ssh-keygen -E md5 -lf ~/.ssh/fama_rsa.pub | awk '{print $2}'
@@ -76,10 +73,10 @@ md5:d0:65:34:b8:42:93:88:45:24:59:cd:a7:e7:90:c2:6d
 ```
 You need to take the part after `md5:` in this case should be `d0:65:34:b8:42:93:88:45:24:59:cd:a7:e7:90:c2:6d`
 
-Also is needed to add all credentials in the `terraform.tfvars`
+After the last steps is need to add all credentials in the `terraform.tfvars`
 
-Before to run the terraform plan is needed to download the terraform dependencies then you need to run the command init.
-After it you need to validate it check that all structures you have all correct.
+Before to run the terraform plan is need to download the terraform dependencies then you need to run the command init.
+After it you need to validate it check all structures you have all correct.
 ```shell script
 cd terraform/production
 terraform init
@@ -96,3 +93,44 @@ Finally we can deploy the plan with the command
 terraform apply -var-file=terraform.json
 ```
 
+
+## Deployment 
+
+### Setup
+The repository uses Github Actions, there is a `deploy-prod.yml` flow in 
+which is configured the pipeline to deploy into the remote instance each time  
+there is a push into the master branch. To work properly must be configured the secrets stored in Github.
+
+| Secret   |      Description      | 
+|----------|:-------------:|
+| CODECOV_TOKEN|  It's the token from codecov to upload the report of coverage | 
+| PRO_SERVER_HOST |    It's the server host in which the repository will be deployed   |  
+| PRO_SERVER_PORT|  This is the port used for ssh |  
+| PRO_SERVER_PRIVATE_KEY|  This is the private key to logged into the instance |  
+| PRO_SERVER_USERNAME|   It's the name in the server to logged  |  
+
+The following image illustrates the full process of deployment
+ ![](./images/pipeline-deploy-production.png)
+
+## Testing
+
+### Unit testing
+
+You can run the unit testing using
+```shell script
+go test ./... 
+``` 
+
+### Testing the functionality 
+
+The full API documentation you should find in `api/swagger-spec/openapi.yaml` or
+also you can find in 
+```shell script
+http://67.205.161.100:8081/
+``` 
+You can test the endpoint using:
+
+```shell script
+curl --request GET \
+  --url 'http://67.205.161.100:8080/numbers/145450/words?lang=fr'
+```
